@@ -40,7 +40,6 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
             try {
                 val asteroids = Network.nasa.getAsteroids(startDate, endDate, BuildConfig.API_KEY)
                 database.asteroidDao.insertAll(*asteroids.toAsteroidEntity().toTypedArray())
-                removeRecordsFromThePast()
             } catch (ex: Exception) {
                 _asteroids.value = emptyList()
                 ex.printStackTrace()
@@ -82,9 +81,9 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     suspend fun refreshPictureOfTheDay() {
         withContext(Dispatchers.IO) {
             try {
-                val picture = Network.nasa.getImageOfTheDay(BuildConfig.API_KEY)
+                val picture = Network.nasa.getImageOfTheDay(BuildConfig.API_KEY).toDomainModel()
                 launch(Dispatchers.Main) {
-                    _pictureOfTheDay.value = picture.toDomainModel()
+                    _pictureOfTheDay.value = picture
                 }
             } catch (exception: Exception) {
                 exception.printStackTrace()
