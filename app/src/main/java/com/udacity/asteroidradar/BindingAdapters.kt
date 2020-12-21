@@ -53,7 +53,7 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, picture: PictureOfTheDay?) {
     picture?.let {
-        val context = imgView.context // it.title
+        val context = imgView.context
         imgView.contentDescription =
             context.getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
         if (picture.mediaType != "image") return

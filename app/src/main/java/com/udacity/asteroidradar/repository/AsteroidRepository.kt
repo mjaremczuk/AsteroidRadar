@@ -41,7 +41,6 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
                 val asteroids = Network.nasa.getAsteroids(startDate, endDate, BuildConfig.API_KEY)
                 database.asteroidDao.insertAll(*asteroids.toAsteroidEntity().toTypedArray())
             } catch (ex: Exception) {
-                _asteroids.value = emptyList()
                 ex.printStackTrace()
             } finally {
                 val asteroidSource = database.asteroidDao.getAsteroids()
